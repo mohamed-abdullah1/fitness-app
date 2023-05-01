@@ -41,6 +41,7 @@ export default function Main() {
                     tabBarStyle: {
                         height: 60,
                         borderTopWidth: 0,
+                        marginBottom: 8,
                     },
                 }}
             >
