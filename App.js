@@ -4,6 +4,8 @@ import { useFonts } from "expo-font";
 import { useCallback } from "react";
 import styles from "./styles/app.styles";
 import Main from "./screens/main.screen";
+import { FitnessProvider } from "./context/global.context";
+
 export default function App() {
     //font stablish
     const [fontsLoaded] = useFonts({
@@ -21,7 +23,9 @@ export default function App() {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <Main />
+            <FitnessProvider>
+                <Main />
+            </FitnessProvider>
             <StatusBar style="light" />
         </SafeAreaView>
     );
