@@ -17,42 +17,42 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const Steps = () => {
     const [pedometerAvailability, setPedometerAvailability] = useState("");
     const [stepCount, setStepCount] = useState(0);
-    const [target, setTarget] = useState();
-    const { getTargetFromLocalStorage } = useContext(FitnessContext);
-    useFocusEffect(() => {
-        getTargetFromLocalStorage().then((res) => {
-            console.log("👉res", res);
-            setTarget(res);
-        });
-    });
+    // const [target, setTarget] = useState();
+    // const { getTargetFromLocalStorage } = useContext(FitnessContext);
+    // useFocusEffect(() => {
+    //     getTargetFromLocalStorage().then((res) => {
+    //         console.log("👉res", res);
+    //         setTarget(res);
+    //     });
+    // });
     useEffect(() => {
         calc();
-        (async () => {
-            try {
-                const jsonValue = await AsyncStorage.getItem("@step_count");
-                setStepCount(
-                    jsonValue !== null ? JSON.parse(jsonValue).stepCount : 0
-                );
-            } catch (e) {
-                // error reading value
-            }
-        })();
-        //cleanup
-        return () => {
-            (async () => {
-                try {
-                    const jsonValue = JSON.stringify({ stepCount });
-                    await AsyncStorage.setItem("@step_count", jsonValue);
-                } catch (e) {
-                    // saving error
-                    console.error(e);
-                }
-            })();
-        };
+        // (async () => {
+        //     try {
+        //         const jsonValue = await AsyncStorage.getItem("@step_count");
+        //         setStepCount(
+        //             jsonValue !== null ? JSON.parse(jsonValue).stepCount : 0
+        //         );
+        //     } catch (e) {
+        //         // error reading value
+        //     }
+        // })();
+        // //cleanup
+        // return () => {
+        //     (async () => {
+        //         try {
+        //             const jsonValue = JSON.stringify({ stepCount });
+        //             await AsyncStorage.setItem("@step_count", jsonValue);
+        //         } catch (e) {
+        //             // saving error
+        //             console.error(e);
+        //         }
+        //     })();
+        // };
     }, []);
-    useEffect(() => {
-        console.log("👉", target);
-    }, [target]);
+    // useEffect(() => {
+    //     console.log("👉", target);
+    // }, [target]);
 
     const calc = () => {
         Pedometer.watchStepCount((result) => {
@@ -95,7 +95,7 @@ const Steps = () => {
                 </View>
                 <CircularProgress
                     value={stepCount}
-                    maxValue={target}
+                    maxValue={6500}
                     radius={175}
                     progressValueStyle={{
                         color: colors.light,
@@ -109,7 +109,7 @@ const Steps = () => {
                     inActiveStrokeOpacity={0.5}
                     inActiveStrokeWidth={12}
                     activeStrokeWidth={15}
-                    title={`GOAL ${target}`}
+                    title={`GOAL 6,500`}
                     titleColor={colors.tertiary}
                     titleStyle={{
                         fontSize: 18,
@@ -214,7 +214,7 @@ const Steps = () => {
                             color={colors.light}
                         />
                     </View>
-                    <Text style={styles.p}>{target} steps</Text>
+                    <Text style={styles.p}>6,500 steps</Text>
                 </View>
             </View>
         </View>

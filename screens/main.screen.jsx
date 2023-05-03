@@ -76,7 +76,7 @@ export default function Main() {
                         ),
                     }}
                 />
-                <Tab.Screen
+                {/* <Tab.Screen
                     name="Settings"
                     component={Settings}
                     options={{
@@ -92,7 +92,7 @@ export default function Main() {
                             maxHeight: 30,
                         },
                     }}
-                />
+                /> */}
             </Tab.Navigator>
         </NavigationContainer>
     );
