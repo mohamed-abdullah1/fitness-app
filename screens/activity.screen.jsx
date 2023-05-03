@@ -4,6 +4,35 @@ import Button from "../components/button.component";
 import { Accelerometer, Gyroscope } from "expo-sensors";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
+import * as tf from "@tensorflow/tfjs";
+import { bundleResourceIO } from "@tensorflow/tfjs-react-native";
+
+const acc_modelJSON = require("../assets/acc/acc_model.json");
+const acc_modelWeights = require("../assets/acc/acc_group1-shard1of1.bin");
+
+const acc_loadModel = async () => {
+    console.log("model files", acc_modelJSON, acc_modelWeights);
+    const model = await tf
+        .loadLayersModel(bundleResourceIO(acc_modelJSON, acc_modelWeights))
+        .catch((e) => {
+            console.log("[LOADING ERROR] info:", e);
+        });
+    console.log("model", model);
+    return model;
+};
+const prepareData = (data) => {
+    return tf.tensor3d(data, [100, 3, 1]);
+};
+const makePredictions = async (model, data) => {
+    try {
+        console.log("before Pred::");
+        const predictionsdata = await model.predict(prepareData(data));
+        // let pred = predictionsdata.array(); //split by batch size
+        return predictionsdata;
+    } catch (e) {
+        console.log(e);
+    }
+};
 
 const Activity = () => {
     const [dataAcc, setDataAcc] = useState([]);
@@ -49,8 +78,22 @@ const Activity = () => {
             gyro_unsubscribe();
         }, 6000);
     };
-
     useEffect(() => {
+        acc_loadModel().then((model) => {
+            console.log("👉MODEL :: ", model);
+        });
+    }, []);
+    useEffect(() => {
+        // if (dataAcc.length >= 100) {
+        //     acc_loadModel().then((model) => {
+        //         console
+        //         makePredictions(model, dataAcc.slice(0, 100)).then(
+        //             (predictions) => {
+        //                 console.log("PREDICTION:", predictions);
+        //             }
+        //         );
+        //     });
+        // }
         console.log(
             "👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉👉",
             {
